@@ -1,0 +1,34 @@
+version: "3.9"  # optional since v1.27.0
+networks:
+  lubycash-network:
+    external: true
+
+services:
+  app:
+    container_name: 'adonis-lubycash-api'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node ace serve --watch
+    image: adonis-lubycash
+    volumes:
+      - .:/usr/app
+    networks:
+        - lubycash-network
+    ports:
+      - '3333:3333'
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+      POSTGRES_DB: api_lubycash
+    ports:
+      - '5439:5439'
+    networks:
+      - lubycash-network
+    volumes:
+       - /usr/db/var/lib/postgres
