@@ -24,4 +24,6 @@ Route.get('/', async () => {
   return { hello: 'worlds' }
 })
 
-Route.post('/users', 'UsersController.store')
+Route.group(() => {
+  Route.resource('admins', 'AdminsController').except(['create', 'edit'])
+})

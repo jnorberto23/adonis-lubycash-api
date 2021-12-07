@@ -2,7 +2,8 @@ version: "3.9"  # optional since v1.27.0
 networks:
   lubycash-network:
     external: true
-
+  lubycash-api-network:
+    driver: bridge
 services:
   app:
     container_name: 'adonis-lubycash-api'
@@ -13,22 +14,24 @@ services:
     image: adonis-lubycash
     volumes:
       - .:/usr/app
+      - /usr/app/node_modules # anonymous volume for node_modules only
     networks:
+        - lubycash-api-network
         - lubycash-network
     ports:
       - '3333:3333'
     depends_on:
-      - db
+      - db-api
 
-  db:
+  db-api:
     image: postgres
     environment:
       POSTGRES_PASSWORD: docker
       POSTGRES_USER: docker
       POSTGRES_DB: api_lubycash
     ports:
-      - '5439:5439'
+      - '5435:5432'
     networks:
-      - lubycash-network
+      - lubycash-api-network
     volumes:
-       - /usr/db/var/lib/postgres
+       - /usr/db/var/lib/postgres2

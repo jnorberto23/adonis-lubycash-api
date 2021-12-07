@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm rebuild bcrypt
+
 EXPOSE 3333
 
 CMD ["node", "ace", "serve", "--watch"]
