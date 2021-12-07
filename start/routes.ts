@@ -24,6 +24,9 @@ Route.get('/', async () => {
   return { hello: 'worlds' }
 })
 
+//Login
+Route.post('/login', 'AdminAuthController.login')
+
 Route.group(() => {
   Route.resource('admins', 'AdminsController').except(['create', 'edit'])
-})
+}).middleware('adminAuth')
