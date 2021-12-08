@@ -25,8 +25,14 @@ Route.get('/', async () => {
 })
 
 //Login
-Route.post('/login', 'AdminAuthController.login')
+
+Route.group(() => {
+  Route.post('/admin', 'AuthController.adminLogin')
+  Route.post('/client', 'AuthController.clientLogin')
+}).prefix('login')
 
 Route.group(() => {
   Route.resource('admins', 'AdminsController').except(['create', 'edit'])
 }).middleware('adminAuth')
+
+Route.post('/users', 'UsersController.store')
