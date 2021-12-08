@@ -30,6 +30,7 @@
     "@types/axios": "^0.14.0",
     "@types/kafkajs": "^1.9.0",
     "axios": "^0.24.0",
+    "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.15.0",
     "luxon": "^2.1.1",
     "pg": "^8.7.1",

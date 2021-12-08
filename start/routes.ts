@@ -36,3 +36,6 @@ Route.group(() => {
 }).middleware('adminAuth')
 
 Route.post('/users', 'UsersController.store')
+Route.group(() => {
+  Route.get('/users', 'UsersController.show')
+}).middleware('clientAuth')

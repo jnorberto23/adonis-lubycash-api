@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Hash from '@ioc:Adonis/Core/Hash'
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 export default class AdminAuthController {
   public async adminLogin({ request, auth }: HttpContextContract) {
@@ -12,9 +13,21 @@ export default class AdminAuthController {
     const { email, password } = request.all()
     try {
       const user = await axios.get(`${process.env.MS_URL}/users/${email}`)
-      console.log('enviado: ', password, ', registrado do usuario: ', user.data.password)
+
       const result = await Hash.verify(user.data.password, password)
-      return result
+      if (result) {
+        const jwtToken = jwt.sign(
+          {
+            id: user.data.id,
+            email: user.data.email,
+            cpf: user.data.cpf_number,
+            phone: user.data.phone,
+          },
+          process.env.JWT_SECRET
+        )
+        const [token] = jwtToken.split(' ')
+        return { type: 'bearer', token: token }
+      }
     } catch (err) {
       response.send(err)
       console.log(err)
