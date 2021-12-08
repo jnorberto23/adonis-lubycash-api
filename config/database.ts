@@ -48,8 +48,14 @@ const databaseConfig: DatabaseConfig = {
       healthCheck: false,
       debug: false,
     },
-
-  }
+    sqlite: {
+      client: 'sqlite3',
+      useNullAsDefault: true,
+      connection: {
+        filename: './__tests__/database/database.test.sqlite',
+      },
+    },
+  },
 }
 
 export default databaseConfig

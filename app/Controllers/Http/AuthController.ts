@@ -1,10 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import AdminAuthValidator from 'App/Validators/Auth/AdminAuthValidator'
+
 import Hash from '@ioc:Adonis/Core/Hash'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 
 export default class AdminAuthController {
   public async adminLogin({ request, auth }: HttpContextContract) {
+    await request.validate(AdminAuthValidator)
     const { email, password } = request.all()
     const token = await auth.attempt(email, password)
     return token
