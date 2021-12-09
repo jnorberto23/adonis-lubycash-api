@@ -1,7 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Transfer from 'App/Models/Transfer'
 import AxiosClients from 'App/Services/Axios/AxiosClients'
-import moment from 'moment'
 
 export default class TransfersController {
   public async index({ params, response }: HttpContextContract) {
@@ -35,13 +34,16 @@ export default class TransfersController {
     try {
       const { from, to } = request.params()
       const { cpf } = params.client
+
       const transfers = await Transfer.query()
-        .where('sender_cpf', cpf)
-        .orWhere('beneficiary_cpf', cpf)
         .select('sender_cpf', 'beneficiary_cpf', 'value', 'createdAt')
         .where((transfer) => {
           if (from) transfer.where('createdAt', '>=', from)
-          if (to) transfer.andWhere('createdAt', '<=', to)
+          if (to) transfer.andWhere('createdAt', '<=', `${to}T23:59:59`)
+        })
+        .andWhere((transfer) => {
+          transfer.where('sender_cpf', cpf)
+          transfer.orWhere('beneficiary_cpf', cpf)
         })
 
       let sent: number = 0
@@ -95,8 +97,12 @@ export default class TransfersController {
         })
       }
 
-      await new AxiosClients().put(beneficiaryCpf, beneficiaryUser.current_balance + value)
-      await new AxiosClients().put(senderCpf, senderUser.current_balance - value)
+      await new AxiosClients().put(beneficiaryCpf, {
+        current_balance: beneficiaryUser.current_balance + value,
+      })
+      await new AxiosClients().put(senderCpf, {
+        current_balance: senderUser.current_balance - value,
+      })
 
       await Transfer.create({ sender_cpf: senderCpf, beneficiary_cpf: beneficiaryCpf, value })
 

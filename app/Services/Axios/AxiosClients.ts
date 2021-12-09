@@ -9,9 +9,9 @@ export default class AxiosClients {
       return err
     }
   }
-  public async put(cpf: string, current_balance: number) {
+  public async put(cpf: string, data: any) {
     try {
-      const client = await axios.put(`${process.env.MS_URL}/users/${cpf}`, { current_balance })
+      const client = await axios.put(`${process.env.MS_URL}/users/${cpf}`, { ...data })
       return client
     } catch (err) {
       return err
