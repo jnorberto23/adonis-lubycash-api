@@ -41,6 +41,7 @@
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.15.0",
     "luxon": "^2.1.1",
+    "moment": "^2.29.1",
     "pg": "^8.7.1",
     "phc-bcrypt": "^1.0.7",
     "proxy-addr": "^2.0.7",

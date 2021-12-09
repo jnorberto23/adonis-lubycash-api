@@ -26,7 +26,6 @@ export default class AdminAuthController {
             email: user.data.email,
             cpf: user.data.cpf_number,
             phone: user.data.phone,
-            balance: user.data.current_balance,
           },
           process.env.JWT_SECRET
         )

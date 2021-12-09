@@ -41,5 +41,6 @@ Route.group(() => {
 }).middleware('clientAuth')
 
 Route.group(() => {
-  Route.resource('transfers', 'TransfersController').only(['store', 'show', 'index'])
+  //Route.resource('transfers', 'TransfersController').only(['store', 'show', 'index'])
+  Route.get('/transfers/:from/:to?', 'TransfersController.show')
 }).middleware('clientAuth')

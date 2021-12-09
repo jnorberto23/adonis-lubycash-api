@@ -1,14 +1,68 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Transfer from 'App/Models/Transfer'
 import AxiosClients from 'App/Services/Axios/AxiosClients'
+import moment from 'moment'
 
 export default class TransfersController {
-  public async index({}: HttpContextContract) {
-    return 'index'
+  public async index({ params, response }: HttpContextContract) {
+    try {
+      const { cpf } = params.client
+      const transfers = await Transfer.query()
+        .where('sender_cpf', cpf)
+        .orWhere('beneficiary_cpf', cpf)
+        .select('sender_cpf', 'beneficiary_cpf', 'value', 'createdAt')
+
+      let sent: number = 0
+      let received: number = 0
+
+      transfers.forEach((transfer) => {
+        transfer.sender_cpf === cpf
+          ? (sent += Number(transfer.value))
+          : (received += Number(transfer.value))
+      })
+
+      return { ...params.client, sent, received, balance: received - sent, transfers }
+    } catch (err) {
+      return response.internalServerError({
+        error: {
+          message: 'Ocorreu um erro interno ao listar o seu extrato, tente novamente mais tarde.',
+        },
+      })
+    }
   }
 
-  public async show({}: HttpContextContract) {
-    return 'show'
+  public async show({ params, response, request }: HttpContextContract) {
+    try {
+      const { from, to } = request.params()
+      const { cpf } = params.client
+      const transfers = await Transfer.query()
+        .where('sender_cpf', cpf)
+        .orWhere('beneficiary_cpf', cpf)
+        .select('sender_cpf', 'beneficiary_cpf', 'value', 'createdAt')
+        .where((transfer) => {
+          if (from) transfer.where('createdAt', '>=', from)
+          if (to) transfer.andWhere('createdAt', '<=', to)
+        })
+
+      let sent: number = 0
+      let received: number = 0
+
+      transfers.forEach((transfer) => {
+        transfer.sender_cpf === cpf
+          ? (sent += Number(transfer.value))
+          : (received += Number(transfer.value))
+      })
+
+      return { ...params.client, sent, received, balance: received - sent, transfers }
+    } catch (err) {
+      return response.internalServerError({
+        error: {
+          message: 'Ocorreu um erro interno ao listar o seu extrato, tente novamente mais tarde.',
+        },
+      })
+    }
   }
+
   public async store({ response, params, request }: HttpContextContract) {
     const { cpf: senderCpf } = params.client
     const { beneficiary_cpf: beneficiaryCpf, value } = request.all()
@@ -43,6 +97,8 @@ export default class TransfersController {
 
       await new AxiosClients().put(beneficiaryCpf, beneficiaryUser.current_balance + value)
       await new AxiosClients().put(senderCpf, senderUser.current_balance - value)
+
+      await Transfer.create({ sender_cpf: senderCpf, beneficiary_cpf: beneficiaryCpf, value })
 
       return `Pix realizado com sucesso.`
     } catch (err) {
