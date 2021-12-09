@@ -2,24 +2,32 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Producer from 'App/Services/Kafka/Producer'
 import Hash from '@ioc:Adonis/Core/Hash'
 import AxiosClients from 'App/Services/Axios/AxiosClients'
+import StoreValidator from 'App/Validators/Clients/StoreValidator'
 
 export default class ClientsController {
   public async store({ request, response }: HttpContextContract) {
-    const data = request.all()
-    const { data: user } = await new AxiosClients().get(data.cpf_number)
+    await request.validate(StoreValidator)
+    try {
+      const data = request.all()
+      const { data: user } = await new AxiosClients().get(data.cpf_number)
 
-    if (user) {
-      return response.forbidden({
-        error: { message: 'Oops, esse CPF já está cadastrado como nosso cliente.' },
+      if (user) {
+        return response.forbidden({
+          error: { message: 'Oops, esse CPF já está cadastrado como nosso cliente.' },
+        })
+      }
+      data.password = await Hash.make(data.password)
+      const producer = new Producer()
+      producer.produce({
+        topic: 'newClient',
+        messages: [{ value: JSON.stringify(data) }],
+      })
+      response.send(data)
+    } catch (err) {
+      return response.internalServerError({
+        error: { message: 'Oops, aconteceu um erro interno, tente novamente mais tarde.' },
       })
     }
-    data.password = await Hash.make(data.password)
-    const producer = new Producer()
-    producer.produce({
-      topic: 'newClient',
-      messages: [{ value: JSON.stringify(data) }],
-    })
-    response.send(data)
   }
 
   public async index({ params }: HttpContextContract) {
