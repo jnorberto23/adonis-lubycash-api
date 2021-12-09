@@ -15,8 +15,8 @@ export default class UsersController {
     response.send(data)
   }
   public async show({ request, params, response }: HttpContextContract) {
-    const { email } = params.client
-    const user = await axios.get(`${process.env.MS_URL}/users/${email}`)
+    const { cpf } = params.client
+    const user = await axios.get(`${process.env.MS_URL}/users/${cpf}`)
     return user.data
   }
 }

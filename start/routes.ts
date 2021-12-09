@@ -35,7 +35,11 @@ Route.group(() => {
   Route.resource('admins', 'AdminsController').except(['create', 'edit'])
 }).middleware('adminAuth')
 
-Route.post('/users', 'UsersController.store')
+Route.post('/clients', 'UsersController.store')
 Route.group(() => {
-  Route.get('/users', 'UsersController.show')
+  Route.get('/clients', 'UsersController.show')
+}).middleware('clientAuth')
+
+Route.group(() => {
+  Route.resource('transfers', 'TransfersController').only(['store', 'show', 'index'])
 }).middleware('clientAuth')

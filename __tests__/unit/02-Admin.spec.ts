@@ -3,7 +3,7 @@ import supertest from 'supertest'
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`
 
-test.group('Users', () => {
+test.group('Admins CRUD', () => {
   // INDEX
   test('INDEX - should return an error if an invalid token is passed as a parameter', async (assert) => {
     const response = await supertest(BASE_URL)

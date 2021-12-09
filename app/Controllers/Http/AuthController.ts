@@ -13,18 +13,20 @@ export default class AdminAuthController {
     return token
   }
   public async clientLogin({ request, response }: HttpContextContract) {
-    const { email, password } = request.all()
+    const { cpf, password } = request.all()
     try {
-      const user = await axios.get(`${process.env.MS_URL}/users/${email}`)
+      const user = await axios.get(`${process.env.MS_URL}/users/${cpf}`)
 
       const result = await Hash.verify(user.data.password, password)
       if (result) {
         const jwtToken = jwt.sign(
           {
             id: user.data.id,
+            name: user.data.full_name,
             email: user.data.email,
             cpf: user.data.cpf_number,
             phone: user.data.phone,
+            balance: user.data.current_balance,
           },
           process.env.JWT_SECRET
         )

@@ -3,7 +3,7 @@ import supertest from 'supertest'
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`
 
-test.group('Authentication', () => {
+test.group('Admin Authentication', () => {
   test('LOGIN - must login successfully and return a token', async (assert) => {
     const response = await supertest(BASE_URL)
       .post('/login/admin')
