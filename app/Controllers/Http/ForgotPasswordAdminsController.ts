@@ -2,8 +2,9 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Admin from 'App/Models/Admin'
 import crypto from 'crypto'
 import moment from 'moment'
-//import MailDelivery from 'App/Services/Kafka/MailDelivery'
+import MailDelivery from 'App/Services/Kafka/MailDelivery'
 import updateValidator from 'App/Validators/Admins/ForgotPassword/UpdateValidator'
+
 export default class ForgotPasswordsAdminsController {
   public async store({ request, response }: HttpContextContract) {
     try {
@@ -13,7 +14,7 @@ export default class ForgotPasswordsAdminsController {
       admin.tokenCreatedAt = new Date()
       await admin.save()
       const link = `${request.input('redirect_url')}?token=${admin.token}`
-      //await new MailDelivery().send(user, { link }, 'forgotPassword', 'Recupeção de senha')
+      await new MailDelivery().send(admin, { link }, 'forgotPassword', 'Recuperação de senha')
     } catch (err) {
       return response
         .status(err.status)
