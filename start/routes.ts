@@ -31,6 +31,8 @@ Route.group(() => {
   //Forgot password
   Route.post('/admins/forgotPassword', 'forgotPasswordAdminsController.store')
   Route.put('/admins/forgotPassword', 'forgotPasswordAdminsController.update')
+  Route.post('/clients/forgotPassword', 'forgotPasswordClientsController.store')
+  Route.put('/clients/forgotPassword', 'forgotPasswordClientsController.update')
 })
 
 //Public Route
