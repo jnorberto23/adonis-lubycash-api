@@ -9,13 +9,7 @@ export default class ClientsController {
     await request.validate(StoreValidator)
     try {
       const data = request.all()
-      const { data: user } = await new AxiosClients().get(data.cpf_number)
 
-      if (user) {
-        return response.forbidden({
-          error: { message: 'Oops, esse CPF já está cadastrado como nosso cliente.' },
-        })
-      }
       data.password = await Hash.make(data.password)
       const producer = new Producer()
       producer.produce({
@@ -32,7 +26,7 @@ export default class ClientsController {
 
   public async index({ params }: HttpContextContract) {
     const { cpf } = params.client
-    const { data: user } = await new AxiosClients().get(cpf)
+    const { data: user } = await new AxiosClients().get('cpf_number', cpf)
     return user
   }
 
