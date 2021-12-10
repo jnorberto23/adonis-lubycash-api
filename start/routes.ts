@@ -26,9 +26,12 @@ Route.get('/', async () => {
 
 //Login
 Route.group(() => {
-  Route.post('/admin', 'AuthController.adminLogin')
-  Route.post('/client', 'AuthController.clientLogin')
-}).prefix('login')
+  Route.post('/admins/login', 'AuthController.adminLogin')
+  Route.post('/clients/login', 'AuthController.clientLogin')
+  //Forgot password
+  Route.post('/admins/forgotPassword', 'forgotPasswordAdminsController.store')
+  Route.put('/admins/forgotPassword', 'forgotPasswordAdminsController.update')
+})
 
 //Public Route
 Route.post('/clients', 'ClientsController.store')
@@ -45,7 +48,9 @@ Route.group(() => {
 }).middleware('clientAuth')
 
 Route.group(() => {
+  //Admins
   Route.resource('admins', 'AdminsController').except(['create', 'edit'])
-  Route.get('/queryByCpf/:cpf', 'AdminsQueriesController.queryByCpf')
-  Route.get('/queryByStatus/:status', 'AdminsQueriesController.queryByStatus')
+  //Queries
+  Route.get('/admins/queryByCpf/:cpf', 'AdminsQueriesController.queryByCpf')
+  Route.get('/admins/queryByStatus/:status', 'AdminsQueriesController.queryByStatus')
 }).middleware('adminAuth')

@@ -15,7 +15,9 @@ export default class ClientsController {
         topic: 'newClient',
         messages: [{ value: JSON.stringify(data) }],
       })
-      response.send(data)
+      response.send(
+        'Sua requisição foi enviada com sucesso, fique atento ao seu e-mail e em breve enviaremos um feedback.'
+      )
     } catch (err) {
       return response.internalServerError({
         error: { message: 'Oops, aconteceu um erro interno, tente novamente mais tarde.' },

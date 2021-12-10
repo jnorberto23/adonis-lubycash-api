@@ -1,6 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Admin from 'App/Models/Admin'
-import StoreValidator from 'App/Validators/Admins/StoreValidator'
+import StoreValidator from 'App/Validators/Admins/CRUD/StoreValidator'
 
 export default class AdminsController {
   public async index({ response, request }: HttpContextContract) {

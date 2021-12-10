@@ -1,5 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AdminAuthValidator from 'App/Validators/Auth/AdminAuthValidator'
+import AdminAuthValidator from 'App/Validators/Admins/Auth/AdminAuthValidator'
 
 import Hash from '@ioc:Adonis/Core/Hash'
 import jwt from 'jsonwebtoken'
