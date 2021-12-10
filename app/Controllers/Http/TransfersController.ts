@@ -78,8 +78,8 @@ export default class TransfersController {
         })
       }
 
-      const { data: senderUser } = await new AxiosClients().get(senderCpf)
-      const { data: beneficiaryUser } = await new AxiosClients().get(beneficiaryCpf)
+      const { data: senderUser } = await new AxiosClients().get('cpf_number', senderCpf)
+      const { data: beneficiaryUser } = await new AxiosClients().get('cpf_number', beneficiaryCpf)
 
       if (!beneficiaryUser || beneficiaryUser.status === 'refused') {
         return response.badRequest({

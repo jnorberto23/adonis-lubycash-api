@@ -9,7 +9,6 @@ export default class ClientsController {
     await request.validate(StoreValidator)
     try {
       const data = request.all()
-
       data.password = await Hash.make(data.password)
       const producer = new Producer()
       producer.produce({
@@ -37,7 +36,11 @@ export default class ClientsController {
         error: { message: 'Oops, você não tem permissão para realizar essa operacação.' },
       })
     }
-    const userData = request.only(['phone', 'password', 'address', 'city', 'state', 'zipcode'])
+    const userData = request.only(['password', 'address', 'city', 'state', 'zipcode'])
+    if (userData.password) {
+      userData.password = await Hash.make(userData.password)
+    }
+
     await new AxiosClients().put(cpf, userData)
     return userData
   }

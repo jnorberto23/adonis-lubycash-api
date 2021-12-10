@@ -1,5 +1,7 @@
 declare module '@ioc:Adonis/Core/Validator' {
   interface Rules {
-    cpfExists(): Rule
+    cpf(): Rule
+    phone(): Rule
+    emailUnique(): Rule
   }
 }

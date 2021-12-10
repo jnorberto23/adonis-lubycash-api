@@ -25,10 +25,10 @@ export default class StoreValidator {
    */
   public schema = schema.create({
     full_name: schema.string(),
-    email: schema.string({}, [rules.email()]),
+    email: schema.string({}, [rules.email(), rules.emailUnique()]),
     password: schema.string({}, [rules.minLength(6)]),
-    phone: schema.string({}, [rules.minLength(11), rules.maxLength(11)]),
-    cpf_number: schema.string({}, [rules.cpfExists(), rules.minLength(11), rules.maxLength(11)]),
+    phone: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.phone()]),
+    cpf_number: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.cpf()]),
     address: schema.string(),
     city: schema.string(),
     state: schema.string(),
@@ -48,5 +48,4 @@ export default class StoreValidator {
    * }
    *
    */
-  public messages = {}
 }

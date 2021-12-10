@@ -46,4 +46,6 @@ Route.group(() => {
 
 Route.group(() => {
   Route.resource('admins', 'AdminsController').except(['create', 'edit'])
+  Route.get('/queryByCpf/:cpf', 'AdminsQueriesController.queryByCpf')
+  Route.get('/queryByStatus/:status', 'AdminsQueriesController.queryByStatus')
 }).middleware('adminAuth')
