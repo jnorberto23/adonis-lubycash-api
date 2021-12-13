@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Transfer from 'App/Models/Transfer'
 import AxiosClients from 'App/Services/Axios/AxiosClients'
+import MailDelivery from 'App/Services/Kafka/MailDelivery'
 
 export default class TransfersController {
   public async index({ params, response }: HttpContextContract) {
@@ -105,6 +106,20 @@ export default class TransfersController {
       })
 
       await Transfer.create({ sender_cpf: senderCpf, beneficiary_cpf: beneficiaryCpf, value })
+
+      await new MailDelivery().send(
+        senderUser,
+        { receiver: beneficiaryUser, value },
+        'newTransferSend',
+        'Transferência realizada com sucesso!'
+      )
+
+      await new MailDelivery().send(
+        beneficiaryUser,
+        { sender: senderUser, value },
+        'newTransferReceived',
+        'Você recebeu uma transferência!'
+      )
 
       return `Pix realizado com sucesso.`
     } catch (err) {

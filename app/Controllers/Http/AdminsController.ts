@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Admin from 'App/Models/Admin'
+import MailDelivery from 'App/Services/Kafka/MailDelivery'
 import StoreValidator from 'App/Validators/Admins/CRUD/StoreValidator'
 
 export default class AdminsController {
@@ -19,6 +20,7 @@ export default class AdminsController {
     try {
       const data = request.all()
       const admin = await Admin.create(data)
+      await new MailDelivery().send(admin, { admin }, 'newAdmin', 'Boas vindas')
       return admin
     } catch (err) {
       response
