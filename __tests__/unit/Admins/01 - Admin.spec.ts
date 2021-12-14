@@ -15,7 +15,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('INDEX - must return all users if a valid token is passed as a parameter', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -31,7 +31,7 @@ test.group('Admins CRUD', () => {
 
   // SHOW
   test('SHOW - must return a user if the requesters id is equal to the id passed as parameter', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -46,7 +46,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('SHOW - should return an error if the requesters id is different from the id passed as parameter', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -61,7 +61,7 @@ test.group('Admins CRUD', () => {
   })
   // STORE
   test('STORE - should return an error if any field is empty', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -83,7 +83,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('STORE - must register the user if no field is empty', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -102,7 +102,7 @@ test.group('Admins CRUD', () => {
 
   // UPDATE
   test('UPDATE - should return an error if there is an attempt to update from a non-existent user', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaoskke@outlook.com',
       password: 'root',
     })
@@ -116,7 +116,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('UPDATE - should return an error if the requesting user is different from the target user', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -135,7 +135,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('UPDATE - must update the data if the requester id is the same as the target id', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -153,7 +153,7 @@ test.group('Admins CRUD', () => {
   })
   // DESTROY
   test('DESTROY - should return an error if the target user does not exist', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joao@skke.com',
       password: 'root',
     })
@@ -168,7 +168,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('DESTROY - should return an error if the requester id is different from the target id', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })
@@ -183,7 +183,7 @@ test.group('Admins CRUD', () => {
   })
 
   test('DESTROY - must delete a user if the requester id is the same as the target', async (assert) => {
-    const user = await supertest(BASE_URL).post('/login/admin').send({
+    const user = await supertest(BASE_URL).post('/admins/login').send({
       email: 'joaovictor@outlook.com',
       password: 'root',
     })

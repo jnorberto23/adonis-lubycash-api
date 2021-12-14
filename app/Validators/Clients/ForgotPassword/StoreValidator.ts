@@ -26,9 +26,8 @@ export default class StoreValidator extends MessagesCustom {
    *    ```
    */
   public schema = schema.create({
-    full_name: schema.string({}, [rules.minLength(2)]),
-    email: schema.string({}, [rules.email(), rules.unique({ table: 'admins', column: 'email' })]),
-    password: schema.string({}, [rules.minLength(6)]),
+    cpf: schema.string({}, [rules.minLength(11), rules.maxLength(11)]),
+    redirect_url: schema.string({}, [rules.url()]),
   })
 
   /**

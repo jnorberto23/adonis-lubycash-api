@@ -6,10 +6,10 @@ const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`
 test.group('Admin Authentication', () => {
   test('LOGIN - must login successfully and return a token', async (assert) => {
     const response = await supertest(BASE_URL)
-      .post('/login/admin')
+      .post('/admins/login')
       .send({
-        email: 'joaovictor@outlook.com',
-        password: 'root',
+        email: 'rafaelaj@gmail.com',
+        password: '123456',
       })
       .expect(200)
     assert.equal(response.status, 200)
@@ -18,9 +18,9 @@ test.group('Admin Authentication', () => {
 
   test('LOGIN - should return an error if the password is incorrect', async (assert) => {
     const response = await supertest(BASE_URL)
-      .post('/login/admin')
+      .post('/admins/login')
       .send({
-        email: 'joaovictor@outlook.com',
+        email: 'rafaelaj@gmail.com',
         password: 'rootaaa',
       })
       .expect(400)
@@ -30,7 +30,7 @@ test.group('Admin Authentication', () => {
 
   test('LOGIN - should return an error if the email does not exist', async (assert) => {
     const response = await supertest(BASE_URL)
-      .post('/login/admin')
+      .post('/admins/login')
       .send({
         email: 'joao@skke.com',
         password: 'root',

@@ -8,7 +8,7 @@ export default class ForgotPasswordUpdateValidator extends MessagesCustom {
   }
 
   public schema = schema.create({
-    token: schema.string({}, [rules.exists({ table: 'admins', column: 'token' })]),
+    token: schema.string({}, [rules.minLength(5)]),
     password: schema.string({}, [rules.confirmed()]),
   })
 }

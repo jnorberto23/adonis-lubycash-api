@@ -1,8 +1,11 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import MessagesCustom from 'App/Validators/MessagesCustom'
 
-export default class UpdateValidator {
-  constructor(protected ctx: HttpContextContract) {}
+export default class UpdateValidator extends MessagesCustom {
+  constructor(protected ctx: HttpContextContract) {
+    super()
+  }
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -39,5 +42,4 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages = {}
 }

@@ -14,8 +14,8 @@ import AxiosClients from 'App/Services/Axios/AxiosClients'
 validator.rule(
   'cpf', // rule name
   async (value, _, options) => {
-    const { data: user } = await new AxiosClients().get('cpf_number', value)
-    if (user !== undefined) {
+    const { data: user } = await new AxiosClients().get('cpf_number=' + value)
+    if (user.length) {
       options.errorReporter.report(
         options.pointer,
         'cpf.unique',
@@ -35,8 +35,8 @@ validator.rule(
 validator.rule(
   'phone', // rule name
   async (value, _, options) => {
-    const { data: user } = await new AxiosClients().get('phone', value)
-    if (user !== undefined) {
+    const { data: user } = await new AxiosClients().get('phone=' + value)
+    if (user.length) {
       options.errorReporter.report(
         options.pointer,
         'phone.unique',
@@ -56,8 +56,8 @@ validator.rule(
 validator.rule(
   'emailUnique', // rule name
   async (value, _, options) => {
-    const { data: user } = await new AxiosClients().get('email', value)
-    if (user !== undefined) {
+    const { data: user } = await new AxiosClients().get('email=' + value)
+    if (user.length) {
       options.errorReporter.report(
         options.pointer,
         'email.unique',

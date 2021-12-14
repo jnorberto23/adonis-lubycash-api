@@ -6,6 +6,7 @@ export default class StoreValidator extends MessagesCustom {
   constructor(protected ctx: HttpContextContract) {
     super()
   }
+
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
    *
@@ -26,9 +27,17 @@ export default class StoreValidator extends MessagesCustom {
    *    ```
    */
   public schema = schema.create({
-    full_name: schema.string({}, [rules.minLength(2)]),
-    email: schema.string({}, [rules.email(), rules.unique({ table: 'admins', column: 'email' })]),
+    full_name: schema.string(),
+    email: schema.string({}, [rules.email(), rules.emailUnique()]),
     password: schema.string({}, [rules.minLength(6)]),
+    phone: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.phone()]),
+    cpf_number: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.cpf()]),
+    address: schema.string(),
+    city: schema.string(),
+    state: schema.string(),
+    zipcode: schema.string({}, [rules.minLength(8), rules.maxLength(8)]),
+    current_balance: schema.number(),
+    average_salary: schema.number(),
   })
 
   /**

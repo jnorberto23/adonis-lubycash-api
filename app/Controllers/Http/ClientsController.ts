@@ -2,7 +2,8 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Producer from 'App/Services/Kafka/Producer'
 import Hash from '@ioc:Adonis/Core/Hash'
 import AxiosClients from 'App/Services/Axios/AxiosClients'
-import StoreValidator from 'App/Validators/Clients/StoreValidator'
+import StoreValidator from 'App/Validators/Clients/CRUD/StoreValidator'
+import UpdateValidator from 'App/Validators/Clients/ForgotPassword/UpdateValidator'
 
 export default class ClientsController {
   public async store({ request, response }: HttpContextContract) {
@@ -15,9 +16,10 @@ export default class ClientsController {
         topic: 'newClient',
         messages: [{ value: JSON.stringify(data) }],
       })
-      response.send(
-        'Sua requisição foi enviada com sucesso, fique atento ao seu e-mail e em breve enviaremos um feedback.'
-      )
+      response.send({
+        message:
+          'Sua requisição foi enviada com sucesso, fique atento ao seu e-mail e em breve enviaremos um feedback.',
+      })
     } catch (err) {
       return response.internalServerError({
         error: { message: 'Oops, aconteceu um erro interno, tente novamente mais tarde.' },
@@ -27,11 +29,12 @@ export default class ClientsController {
 
   public async index({ params }: HttpContextContract) {
     const { cpf } = params.client
-    const { data: user } = await new AxiosClients().get('cpf_number', cpf)
-    return user
+    const { data: user } = await new AxiosClients().get(`cpf_number=${cpf}`)
+    return user[0]
   }
 
   public async update({ request, params, response }: HttpContextContract) {
+    await request.validate(UpdateValidator)
     const { cpf } = request.params()
     if (cpf !== params.client.cpf) {
       return response.forbidden({

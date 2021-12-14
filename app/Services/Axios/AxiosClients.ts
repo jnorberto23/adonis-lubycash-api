@@ -1,10 +1,15 @@
 import axios from 'axios'
 
 export default class AxiosClients {
-  public async get(key, value) {
+  public async get(query?: string) {
     try {
-      const client = await axios.get(`${process.env.MS_URL}/users?${key}=${value}`)
-      return client
+      if (query) {
+        const client = await axios.get(`${process.env.MS_URL}/users?${query}`)
+        return client
+      } else {
+        const client = await axios.get(`${process.env.MS_URL}/users`)
+        return client
+      }
     } catch (err) {
       return err
     }

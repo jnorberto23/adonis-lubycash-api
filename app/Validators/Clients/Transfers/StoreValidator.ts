@@ -1,8 +1,11 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import MessagesCustom from 'App/Validators/MessagesCustom'
 
-export default class StoreValidator {
-  constructor(protected ctx: HttpContextContract) {}
+export default class StoreValidator extends MessagesCustom {
+  constructor(protected ctx: HttpContextContract) {
+    super()
+  }
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -24,17 +27,8 @@ export default class StoreValidator {
    *    ```
    */
   public schema = schema.create({
-    full_name: schema.string(),
-    email: schema.string({}, [rules.email(), rules.emailUnique()]),
-    password: schema.string({}, [rules.minLength(6)]),
-    phone: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.phone()]),
-    cpf_number: schema.string({}, [rules.minLength(11), rules.maxLength(11), rules.cpf()]),
-    address: schema.string(),
-    city: schema.string(),
-    state: schema.string(),
-    zipcode: schema.string({}, [rules.minLength(8), rules.maxLength(8)]),
-    current_balance: schema.number(),
-    average_salary: schema.number(),
+    beneficiary_cpf: schema.string({}, [rules.minLength(11), rules.maxLength(11)]),
+    value: schema.number(),
   })
 
   /**

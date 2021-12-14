@@ -10,10 +10,9 @@ export default class Producer {
 
   constructor() {
     const kafka = new Kafka({
-      clientId: 'mailer-producer',
+      clientId: 'api-producer',
       brokers: ['kafka:29092'],
     })
-
     this.producer = kafka.producer()
   }
 
